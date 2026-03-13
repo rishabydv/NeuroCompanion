@@ -1,0 +1,80 @@
+.spline-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  animation: splineReveal 1.5s ease forwards;
+}
+
+@keyframes splineReveal {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Hide the Spline watermark by extending iframe beyond container */
+.spline-scene iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% + 60px);
+  height: calc(100% + 60px);
+  border: none;
+  border-radius: inherit;
+}
+
+.spline-scene.spline-loaded {
+  opacity: 1;
+}
+
+.spline-scene canvas {
+  border-radius: var(--radius-xl);
+}
+
+/* Loader */
+.spline-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  z-index: 2;
+}
+
+.spline-loader-orb {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--gradient-lavender);
+  opacity: 0.5;
+  animation: breathe 2s ease infinite, float 3s ease infinite;
+}
+
+.spline-loader-text {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  animation: gentlePulse 2s ease infinite;
+}
+
+/* Fallback */
+.spline-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+}
+
+.spline-fallback-orb {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--gradient-lavender);
+  opacity: 0.25;
+  animation: breathe 3s ease infinite, float 4s ease infinite;
+  filter: blur(8px);
+}

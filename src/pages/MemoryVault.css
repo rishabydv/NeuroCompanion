@@ -1,0 +1,116 @@
+.memory-vault {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+/* Header with Spline accent */
+.mv-header {
+  position: relative;
+  border-radius: var(--radius-xl);
+  background: rgba(36, 31, 54, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: var(--space-2xl);
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  overflow: visible;
+}
+
+.mv-spline-accent {
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+}
+
+.mv-spline {
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+}
+
+.mv-spline-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--bg-card) 20%, transparent 80%);
+}
+
+.page-header-inner {
+  position: relative;
+  z-index: 2;
+}
+
+.page-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.page-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.memory-icon {
+  background: rgba(168, 230, 207, 0.12);
+  color: var(--mint);
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.page-subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Intro */
+.memory-intro {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-lg) var(--space-xl);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+}
+
+.intro-sparkle {
+  color: var(--lavender);
+  animation: gentlePulse 2.5s ease infinite;
+  flex-shrink: 0;
+}
+
+/* Grid */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-lg);
+}
+
+@media (max-width: 700px) {
+  .memory-grid {
+    grid-template-columns: 1fr;
+  }
+}
