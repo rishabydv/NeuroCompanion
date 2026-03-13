@@ -23,6 +23,7 @@ const LifeTimelinePage = lazy(() => import('./pages/LifeTimelinePage'));
 const FaceRecognitionPage = lazy(() => import('./pages/FaceRecognitionPage'));
 const MemoryMapPage = lazy(() => import('./pages/MemoryMapPage'));
 const ConversationMemory = lazy(() => import('./pages/ConversationMemory'));
+const ActivityMonitor = lazy(() => import('./components/ActivityMonitor'));
 const SOSButton = lazy(() => import('./components/SOSButton'));
 
 function PageLoader() {
@@ -109,6 +110,7 @@ export default function App() {
                 <Route path="/memory-map" element={<MemoryMapPage />} />
                 <Route path="/daily-log" element={<ConversationMemory />} />
                 <Route path="/caregiver" element={<CaregiverDashboard />} />
+                <Route path="/activity-monitor" element={<ActivityMonitor />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Suspense>

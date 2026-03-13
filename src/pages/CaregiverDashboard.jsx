@@ -175,7 +175,7 @@ export default function CaregiverDashboard() {
         <div className="cg-action-grid">
           <button className="cg-action-btn" onClick={() => setShowAddForm('family member')}>
             <Plus size={18} />
-            Add Family Member
+            Add Family
           </button>
           <button className="cg-action-btn" onClick={() => setShowAddForm('routine')}>
             <Plus size={18} />
@@ -185,9 +185,13 @@ export default function CaregiverDashboard() {
             <Plus size={18} />
             Add Memory
           </button>
+          <button className="cg-action-btn" onClick={() => window.location.href='/activity-monitor'} style={{background: 'var(--gradient-lavender)', color: 'white', borderColor: 'transparent'}}>
+            <Activity size={18} />
+            AI Camera Monitor
+          </button>
           <button className="cg-action-btn cg-danger-btn" onClick={() => setShowWanderingAlert(true)}>
             <AlertTriangle size={18} />
-            Simulate Wandering Alert
+            Wandering Alert
           </button>
         </div>
       </section>
