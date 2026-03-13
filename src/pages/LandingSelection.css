@@ -1,0 +1,119 @@
+.landing-selection-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100vw;
+  position: relative;
+  z-index: 20; /* Ensure it stays above the 3D background */
+  background: rgba(8, 6, 15, 0.85); /* Darker backdrop to hide 3D slightly on start */
+  backdrop-filter: blur(10px);
+}
+
+.landing-content {
+  text-align: center;
+  max-width: 900px;
+  padding: var(--space-xl);
+  animation: fadeIn 0.8s ease-out;
+}
+
+.landing-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+  letter-spacing: -0.02em;
+}
+
+.landing-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2xl);
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-xl);
+  margin-top: var(--space-xl);
+}
+
+.mode-card {
+  background: var(--surface-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl) var(--space-xl);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-bounce);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.mode-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  background: var(--surface-hover);
+  border-color: var(--primary-light);
+}
+
+.icon-wrapper {
+  background: rgba(255, 255, 255, 0.1);
+  padding: var(--space-lg);
+  border-radius: 50%;
+  margin-bottom: var(--space-sm);
+  color: var(--primary-light);
+}
+
+.preventive-card .icon-wrapper {
+  background: rgba(14, 165, 233, 0.15); /* Sky blue tint for active mode */
+  color: #38bdf8;
+}
+
+.companion-card .icon-wrapper {
+  background: rgba(244, 114, 182, 0.15); /* Pink/warm tint for companion mode */
+  color: #f472b6;
+}
+
+.caregiver-card .icon-wrapper {
+  background: rgba(52, 211, 153, 0.15); /* Green tint for caregiver mode */
+  color: #34d399;
+}
+
+.mode-card h2 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.mode-card p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .landing-title {
+    font-size: 2.5rem;
+  }
+  
+  .options-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+}
