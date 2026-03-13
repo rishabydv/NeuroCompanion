@@ -41,9 +41,6 @@ export default function ActivityMonitor({ isEmbedded = false }) {
         video: { facingMode: 'user', width: 640, height: 480 } 
       });
       setStream(mediaStream);
-      if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream;
-      }
     } catch (err) {
       console.error('Error accessing camera:', err);
       setError('Could not access camera. Please allow camera permissions.');
@@ -59,6 +56,13 @@ export default function ActivityMonitor({ isEmbedded = false }) {
       }
     }
   };
+
+  // Bind the stream to the video element whenever stream or videoRef becomes available
+  useEffect(() => {
+    if (stream && videoRef.current && !videoRef.current.srcObject) {
+      videoRef.current.srcObject = stream;
+    }
+  }, [stream]);
 
   // Capture a frame and send to Gemini Vision
   const captureAndAnalyze = async () => {
