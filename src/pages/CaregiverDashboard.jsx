@@ -7,9 +7,11 @@ import {
 import { patient } from '../data/patientData';
 import { usePatientData } from '../context/PatientDataContext';
 import CaregiverAnalytics from '../components/CaregiverAnalytics';
+import { useNavigate } from 'react-router-dom';
 import './CaregiverDashboard.css';
 
 export default function CaregiverDashboard() {
+  const navigate = useNavigate();
   const { family, routines, memories, medications, addFamilyMember, addRoutine, addMemory } = usePatientData();
   const [showAddForm, setShowAddForm] = useState(null);
   const [notification, setNotification] = useState(null);
@@ -185,7 +187,7 @@ export default function CaregiverDashboard() {
             <Plus size={18} />
             Add Memory
           </button>
-          <button className="cg-action-btn" onClick={() => window.location.href='/activity-monitor'} style={{background: 'var(--gradient-lavender)', color: 'white', borderColor: 'transparent'}}>
+          <button className="cg-action-btn" onClick={() => navigate('/activity-monitor')} style={{background: 'var(--gradient-lavender)', color: 'white', borderColor: 'transparent'}}>
             <Activity size={18} />
             AI Camera Monitor
           </button>
