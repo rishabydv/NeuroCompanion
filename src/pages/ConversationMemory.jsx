@@ -91,7 +91,7 @@ export default function ConversationMemory() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          system_instruction: { parts: [{ text: systemPrompt }] },
+          systemInstruction: { parts: [{ text: systemPrompt }] },
           contents: [{ role: 'user', parts: [{ text: query }] }],
           generationConfig: { temperature: 0.3, maxOutputTokens: 150 }
         }),

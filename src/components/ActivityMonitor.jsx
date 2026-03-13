@@ -4,7 +4,7 @@ import { patient } from '../data/patientData';
 import ScrollReveal from '../components/ScrollReveal';
 import './ActivityMonitor.css';
 
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyAYm7RHvGJTdCtQxfpFkXzuSKITB61JHPA';
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 export default function ActivityMonitor({ isEmbedded = false }) {
@@ -89,7 +89,7 @@ export default function ActivityMonitor({ isEmbedded = false }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          system_instruction: {
+          systemInstruction: {
             parts: [{
               text: `You are an AI assistant monitoring a dementia patient (Name: ${patient.name}). 
               Analyze the image and state what the person is doing in 1-4 words.
@@ -103,8 +103,8 @@ export default function ActivityMonitor({ isEmbedded = false }) {
               role: "user",
               parts: [
                 {
-                  inline_data: {
-                    mime_type: "image/jpeg",
+                  inlineData: {
+                    mimeType: "image/jpeg",
                     data: base64Image
                   }
                 },
@@ -136,8 +136,13 @@ export default function ActivityMonitor({ isEmbedded = false }) {
       }
 
     } catch (err) {
-      console.error('Vision API Error:', err);
-      setError('Failed to analyze the frame. Check your API key and connection.');
+      console.error('Vision API Error Details:', err);
+      // Give more specific error message based on common issues
+      if (err.message.includes('API key')) {
+        setError('API Key is invalid or missing.');
+      } else {
+        setError(`Failed to analyze frame: ${err.message}`);
+      }
       setLastDetected("Analysis failed");
     } finally {
       setIsAnalyzing(false);
