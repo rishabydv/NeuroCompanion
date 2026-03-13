@@ -66,43 +66,58 @@ export default function ConversationMemory() {
     saveEvents(events.filter(e => e.id !== id));
   };
 
-  const handleSearch = (query) => {
+  // Gemini API setup
+  const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyAYm7RHvGJTdCtQxfpFkXzuSKITB61JHPA';
+  const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+  const callGemini = async (query, eventsList) => {
+    const todayStr = new Date().toDateString();
+    const systemPrompt = `You are a helpful memory assistant for a dementia patient named ${patient.name}. Today is ${todayStr}.
+    You have access to their daily event log. Answer their question based ONLY on this log.
+    If the log doesn't contain the answer, gently say you don't know but reassure them.
+    Keep answers very short, warm, and conversational (1-2 sentences).
+    
+    EVENT LOG:
+    ${eventsList.length === 0 ? 'No events logged yet.' : JSON.stringify(eventsList.map(e => ({
+      who: e.person,
+      what: e.typeLabel,
+      when: e.dateStr + ' ' + e.timeStr,
+      note: e.note
+    })))}
+    `;
+
+    try {
+      const response = await fetch(GEMINI_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: systemPrompt }] },
+          contents: [{ role: 'user', parts: [{ text: query }] }],
+          generationConfig: { temperature: 0.3, maxOutputTokens: 150 }
+        }),
+      });
+      const data = await response.json();
+      return data.candidates?.[0]?.content?.parts?.[0]?.text;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  };
+
+  const handleSearch = async (query) => {
     setSearchQuery(query);
     if (!query.trim()) { setAiAnswer(null); return; }
 
-    const q = query.toLowerCase();
-    const today = new Date().toDateString();
+    setAiAnswer('🧠 Thinking...');
 
-    // Smart AI-like responses
-    if (q.includes('visit') || q.includes('come') || q.includes('came')) {
-      const todayVisits = events.filter(e => new Date(e.timestamp).toDateString() === today && e.type === 'visit');
-      if (todayVisits.length > 0) {
-        const names = todayVisits.map(v => v.person).join(' and ');
-        setAiAnswer(`Yes! ${names} visited you today. ${todayVisits[0].note ? `"${todayVisits[0].note}"` : ''}`);
-        speakAnswer(`Yes! ${names} visited you today.`);
-      } else {
-        setAiAnswer('No one has visited yet today, but your family loves you and will come soon! 💛');
-        speakAnswer('No one has visited yet today, but your family loves you.');
-      }
-    } else if (q.includes('call') || q.includes('phone')) {
-      const todayCalls = events.filter(e => new Date(e.timestamp).toDateString() === today && e.type === 'call');
-      if (todayCalls.length > 0) {
-        const names = todayCalls.map(v => v.person).join(' and ');
-        setAiAnswer(`${names} called you today! 📞`);
-        speakAnswer(`${names} called you today.`);
-      } else {
-        setAiAnswer('No calls yet today.');
-      }
+    const aiRes = await callGemini(query, events);
+    
+    if (aiRes) {
+      setAiAnswer(aiRes);
+      speakAnswer(aiRes);
     } else {
-      // Search for a person by name
-      const matchedEvents = events.filter(e => e.person.toLowerCase().includes(q));
-      if (matchedEvents.length > 0) {
-        const latest = matchedEvents[0];
-        setAiAnswer(`${latest.person} was last here on ${latest.dateStr} at ${latest.timeStr}. They had a ${latest.typeLabel?.toLowerCase()}.`);
-        speakAnswer(`${latest.person} was last here on ${latest.dateStr}.`);
-      } else {
-        setAiAnswer(`I don't have any records about "${query}". Try asking "Did anyone visit?" or a family member's name.`);
-      }
+      // Fallback 
+      setAiAnswer("I'm having trouble thinking right now. But you are safe, and your family loves you.");
     }
   };
 

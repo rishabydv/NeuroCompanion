@@ -48,7 +48,8 @@ Remember: You are talking DIRECTLY to ${patient.name}. Be their trusted friend.`
 }
 
 // Gemini API integration
-const GEMINI_API_KEY = 'AIzaSyAYm7RHvGJTdCtQxfpFkXzuSKITB61JHPA';
+// Falls back to hardcoded key to avoid requiring a dev server restart during current session
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyAYm7RHvGJTdCtQxfpFkXzuSKITB61JHPA';
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 async function callGemini(messages) {
