@@ -1,0 +1,103 @@
+.family-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding: var(--space-xl) var(--space-2xl);
+  background: rgba(36, 31, 54, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.page-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.page-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.family-icon {
+  background: rgba(245, 197, 163, 0.12);
+  color: var(--peach);
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.page-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.heart-pulse {
+  color: var(--rose);
+  animation: gentlePulse 2s ease infinite;
+}
+
+.page-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--gradient-peach);
+  color: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-glow-peach);
+}
+
+.page-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(245, 197, 163, 0.3);
+}
+
+.family-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-lg);
+}
+
+@media (max-width: 700px) {
+  .page-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .page-header-left {
+    flex-direction: column;
+  }
+
+  .family-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,98 @@
+.family-card {
+  background: rgba(36, 31, 54, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  opacity: 0;
+}
+
+.family-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-active);
+  box-shadow: var(--shadow-glow-lavender);
+}
+
+.family-card-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.family-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.family-card:hover .family-card-image {
+  transform: scale(1.05);
+}
+
+.family-card-relationship {
+  position: absolute;
+  bottom: var(--space-md);
+  left: var(--space-md);
+  background: rgba(15, 13, 26, 0.75);
+  backdrop-filter: blur(10px);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--peach-light);
+  border: 1px solid rgba(245, 197, 163, 0.2);
+}
+
+.family-card-content {
+  padding: var(--space-lg);
+}
+
+.family-card-name {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.family-card-bio {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: var(--space-md);
+}
+
+.family-card-funfact {
+  font-size: var(--text-sm);
+  font-style: italic;
+  color: var(--peach);
+  margin-bottom: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(245, 197, 163, 0.08);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--peach-dark);
+}
+
+.family-card-speak {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(184, 169, 232, 0.12);
+  color: var(--lavender-light);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  transition: all var(--transition-base);
+  border: 1px solid rgba(184, 169, 232, 0.2);
+}
+
+.family-card-speak:hover {
+  background: rgba(184, 169, 232, 0.22);
+  transform: scale(1.03);
+}
