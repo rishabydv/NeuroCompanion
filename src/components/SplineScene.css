@@ -5,63 +5,104 @@
   min-height: 200px;
   border-radius: var(--radius-xl);
   overflow: hidden;
-  opacity: 0;
-  transition: opacity 1.2s ease;
-  animation: splineReveal 1.5s ease forwards;
-}
-
-@keyframes splineReveal {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-/* Hide the Spline watermark by extending iframe beyond container */
-.spline-scene iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: calc(100% + 60px);
-  height: calc(100% + 60px);
-  border: none;
-  border-radius: inherit;
-}
-
-.spline-scene.spline-loaded {
   opacity: 1;
 }
 
-.spline-scene canvas {
-  border-radius: var(--radius-xl);
-}
-
-/* Loader */
-.spline-loader {
+/* ============================================================
+   Pure-CSS Animated Background (replaces heavy Spline 3D)
+   - 4 blurred, floating gradient orbs
+   - subtle noise overlay
+   - ~0% GPU compared to Spline's ~30-50MB
+   ============================================================ */
+.css-bg-scene {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-md);
-  z-index: 2;
+  overflow: hidden;
+  background: var(--bg-primary);
 }
 
-.spline-loader-orb {
-  width: 60px;
-  height: 60px;
+.css-orb {
+  position: absolute;
   border-radius: 50%;
-  background: var(--gradient-lavender);
-  opacity: 0.5;
-  animation: breathe 2s ease infinite, float 3s ease infinite;
+  filter: blur(80px);
+  opacity: 0.45;
+  will-change: transform;
 }
 
-.spline-loader-text {
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-  animation: gentlePulse 2s ease infinite;
+.css-orb-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--lavender) 0%, transparent 70%);
+  top: -15%;
+  left: -10%;
+  animation: orbFloat1 18s ease-in-out infinite;
 }
 
-/* Fallback */
+.css-orb-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--peach) 0%, transparent 70%);
+  top: 50%;
+  right: -10%;
+  animation: orbFloat2 22s ease-in-out infinite;
+}
+
+.css-orb-3 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, var(--sky) 0%, transparent 70%);
+  bottom: -10%;
+  left: 30%;
+  animation: orbFloat3 20s ease-in-out infinite;
+}
+
+.css-orb-4 {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, var(--mint) 0%, transparent 70%);
+  top: 30%;
+  left: 50%;
+  animation: orbFloat4 16s ease-in-out infinite;
+}
+
+/* Subtle film grain / noise overlay for depth */
+.css-noise-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+  pointer-events: none;
+}
+
+/* Orb float keyframes — each has a unique path */
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(60px, 40px) scale(1.05); }
+  50% { transform: translate(30px, 80px) scale(0.95); }
+  75% { transform: translate(-20px, 30px) scale(1.02); }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-50px, -30px) scale(1.08); }
+  50% { transform: translate(-80px, 20px) scale(0.92); }
+  75% { transform: translate(-30px, -50px) scale(1.04); }
+}
+
+@keyframes orbFloat3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(40px, -40px) scale(1.06); }
+  66% { transform: translate(-30px, -20px) scale(0.94); }
+}
+
+@keyframes orbFloat4 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  30% { transform: translate(-40px, 30px) scale(1.1); }
+  60% { transform: translate(20px, -40px) scale(0.9); }
+}
+
+/* Fallback (kept for backwards compat) */
 .spline-fallback {
   display: flex;
   align-items: center;
@@ -75,6 +116,6 @@
   border-radius: 50%;
   background: var(--gradient-lavender);
   opacity: 0.25;
-  animation: breathe 3s ease infinite, float 4s ease infinite;
+  animation: orbFloat1 6s ease infinite;
   filter: blur(8px);
 }

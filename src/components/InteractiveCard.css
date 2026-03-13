@@ -1,0 +1,31 @@
+.interactive-card {
+  transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+  will-change: transform;
+  transform-style: preserve-3d;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+}
+
+.interactive-card:hover {
+  z-index: 2;
+}
+
+.interactive-card-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    circle at var(--glow-x, 50%) var(--glow-y, 50%),
+    var(--glow-color, rgba(184, 169, 232, 0.15)),
+    transparent 60%
+  );
+  z-index: 1;
+}
+
+.interactive-card:hover .interactive-card-glow {
+  opacity: 1;
+}

@@ -1,5 +1,6 @@
 import { Users, Heart, Volume2 } from 'lucide-react';
-import { familyMembers, patient } from '../data/patientData';
+import { patient } from '../data/patientData';
+import { usePatientData } from '../context/PatientDataContext';
 import FamilyCard from '../components/FamilyCard';
 import InteractiveCard from '../components/InteractiveCard';
 import EmergencyCallCards from '../components/EmergencyCallCards';
@@ -7,9 +8,11 @@ import ScrollReveal from '../components/ScrollReveal';
 import './FamilyPage.css';
 
 export default function FamilyPage() {
+  const { family } = usePatientData();
+
   const speakAll = () => {
     let text = `${patient.name}, here is your family. `;
-    familyMembers.forEach((m) => {
+    family.forEach((m) => {
       text += `${m.name} is your ${m.relationship}. ${m.bio} `;
     });
     const utterance = new SpeechSynthesisUtterance(text);
@@ -43,7 +46,7 @@ export default function FamilyPage() {
       </ScrollReveal>
 
       <div className="family-grid">
-        {familyMembers.map((member, i) => (
+        {family.map((member, i) => (
           <ScrollReveal key={member.id} direction="up" delay={i * 0.1}>
             <InteractiveCard glowColor="rgba(245, 197, 163, 0.15)">
               <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -57,3 +60,4 @@ export default function FamilyPage() {
     </div>
   );
 }
+

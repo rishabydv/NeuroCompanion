@@ -54,9 +54,19 @@ export default function MoodThemeProvider({ children }) {
     };
 
     checkMood();
-    // Poll for mood changes every 2 seconds
-    const interval = setInterval(checkMood, 2000);
-    return () => clearInterval(interval);
+    // Listen for mood changes via storage events and custom events
+    const handleStorage = (e) => {
+      if (e.key === 'moodHistory' || e.type === 'moodUpdated') checkMood();
+    };
+    window.addEventListener('storage', handleStorage);
+    window.addEventListener('moodUpdated', handleStorage);
+    // Fallback poll every 30s instead of 2s
+    const interval = setInterval(checkMood, 30000);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('storage', handleStorage);
+      window.removeEventListener('moodUpdated', handleStorage);
+    };
   }, [currentMood]);
 
   const applyTheme = (moodId) => {

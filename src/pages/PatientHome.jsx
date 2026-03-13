@@ -18,21 +18,27 @@ import AmbientClock from '../components/AmbientClock';
 
 import './PatientHome.css';
 
-const SPLINE_SCENE_URL = 'https://my.spline.design/claritystream-4vR4muSsQA0M1MY0wmvUB6hB/';
-
 export default function PatientHome() {
   const navigate = useNavigate();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
+    let rafId = null;
     const handleMouse = (e) => {
-      setMousePos({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20,
+      if (rafId) return; // skip if a frame is already scheduled
+      rafId = requestAnimationFrame(() => {
+        setMousePos({
+          x: (e.clientX / window.innerWidth - 0.5) * 20,
+          y: (e.clientY / window.innerHeight - 0.5) * 20,
+        });
+        rafId = null;
       });
     };
-    window.addEventListener('mousemove', handleMouse);
-    return () => window.removeEventListener('mousemove', handleMouse);
+    window.addEventListener('mousemove', handleMouse, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', handleMouse);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const speakGreeting = () => {
@@ -91,7 +97,6 @@ export default function PatientHome() {
           <div className="hero-right">
             <div className="hero-spline-container">
               <SplineScene
-                sceneUrl={SPLINE_SCENE_URL}
                 className="hero-spline"
               />
               <div className="hero-spline-glow" />

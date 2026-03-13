@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Large files
+DementiaCompanion_Project.zip
+NeuroCompanion_Pitch_Deck.pptx

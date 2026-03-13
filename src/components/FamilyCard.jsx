@@ -17,11 +17,17 @@ export default function FamilyCard({ member, onClick }) {
   return (
     <div className="family-card animate-fade-in-up" onClick={onClick}>
       <div className="family-card-image-wrap">
-        <img
-          src={member.photo}
-          alt={member.name}
-          className="family-card-image"
-        />
+        {member.photo ? (
+          <img
+            src={member.photo}
+            alt={member.name}
+            className="family-card-image"
+          />
+        ) : (
+          <div className="family-card-image family-card-image-placeholder">
+            {member.name ? member.name.charAt(0).toUpperCase() : '?'}
+          </div>
+        )}
         <div className="family-card-relationship">{member.relationship}</div>
       </div>
       <div className="family-card-content">

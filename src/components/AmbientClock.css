@@ -1,0 +1,101 @@
+.ambient-clock-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl);
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto var(--space-2xl) auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  color: var(--text-primary);
+  animation: slideDown 1s ease-out;
+}
+
+.ac-top-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+}
+
+.period-icon {
+  flex-shrink: 0;
+}
+
+.morning { color: #facc15; }     /* Yellow */
+.afternoon { color: #f97316; }   /* Orange */
+.evening { color: #a855f7; }     /* Purple */
+.night { color: #60a5fa; }       /* Blue */
+
+.ac-time-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.ac-time {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.ac-date {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: var(--space-xs) 0 0 0;
+  font-weight: 500;
+}
+
+.ac-context-block {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: var(--space-lg);
+}
+
+.ac-greeting {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.ac-context-text {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .ambient-clock-card {
+    padding: var(--space-xl);
+    max-width: 90%;
+  }
+
+  .ac-time {
+    font-size: 3rem;
+  }
+
+  .ac-greeting {
+    font-size: 1.5rem;
+  }
+
+  .ac-context-text {
+    font-size: 1.1rem;
+  }
+}

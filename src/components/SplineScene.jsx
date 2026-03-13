@@ -1,47 +1,20 @@
-import { useState } from 'react';
 import './SplineScene.css';
 
-export default function SplineScene({ sceneUrl, className = '', onLoad }) {
-  const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(false);
-
-  const handleLoad = () => {
-    setLoaded(true);
-    onLoad?.();
-  };
-
-  if (error) {
-    return (
-      <div className={`spline-scene spline-fallback ${className}`}>
-        <div className="spline-fallback-orb" />
-      </div>
-    );
-  }
-
+/**
+ * Lightweight animated background replacement for Spline 3D.
+ * Renders pure-CSS animated gradient orbs instead of heavy WebGL iframes.
+ * This removes ~30-50MB of GPU memory and eliminates iframe overhead.
+ */
+export default function SplineScene({ className = '' }) {
   return (
-    <div className={`spline-scene ${loaded ? 'spline-loaded' : ''} ${className}`}>
-      {!loaded && (
-        <div className="spline-loader">
-          <div className="spline-loader-orb" />
-          <span className="spline-loader-text">Loading 3D scene…</span>
-        </div>
-      )}
-      <iframe
-        src={sceneUrl}
-        frameBorder="0"
-        width="100%"
-        height="100%"
-        title="3D Scene"
-        onLoad={handleLoad}
-        onError={() => setError(true)}
-        style={{
-          border: 'none',
-          borderRadius: 'inherit',
-          position: 'absolute',
-          inset: 0,
-        }}
-        allow="autoplay"
-      />
+    <div className={`spline-scene spline-loaded ${className}`}>
+      <div className="css-bg-scene">
+        <div className="css-orb css-orb-1" />
+        <div className="css-orb css-orb-2" />
+        <div className="css-orb css-orb-3" />
+        <div className="css-orb css-orb-4" />
+        <div className="css-noise-overlay" />
+      </div>
     </div>
   );
 }

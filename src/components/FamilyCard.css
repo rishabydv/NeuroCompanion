@@ -34,6 +34,17 @@
   transform: scale(1.05);
 }
 
+.family-card-image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(184, 169, 232, 0.3), rgba(245, 197, 163, 0.3));
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -1px;
+}
+
 .family-card-relationship {
   position: absolute;
   bottom: var(--space-md);
