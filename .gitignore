@@ -30,3 +30,8 @@ NeuroCompanion_Pitch_Deck.pptx
 # Environment variables
 .env
 .env.local
+
+# Tools
+google-cloud-sdk/
+google-cloud-cli-darwin-arm.tar.gz
+lint_output.txt
