@@ -4,8 +4,7 @@ import { patient } from '../data/patientData';
 import ScrollReveal from '../components/ScrollReveal';
 import './ActivityMonitor.css';
 
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyB65jhmH9vo2OcmFLikzMbYn6PSvkfS86Q';
-const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+const DEFAULT_GEMINI_API_KEY = '';
 
 export default function ActivityMonitor({ isEmbedded = false }) {
   const videoRef = useRef(null);
@@ -16,6 +15,8 @@ export default function ActivityMonitor({ isEmbedded = false }) {
   const [logs, setLogs] = useState([]);
   const [lastDetected, setLastDetected] = useState(null);
   const [error, setError] = useState('');
+  const [apiKey, setApiKey] = useState(localStorage.getItem('userGeminiApiKey') || '');
+  const [showSettings, setShowSettings] = useState(!localStorage.getItem('userGeminiApiKey'));
 
   // Auto-start camera if embedded (e.g., in Caregiver Dashboard)
   useEffect(() => {
@@ -32,6 +33,20 @@ export default function ActivityMonitor({ isEmbedded = false }) {
   const loadLogs = () => {
     const savedLogs = JSON.parse(localStorage.getItem('aiActivityLogs') || '[]');
     setLogs(savedLogs);
+  };
+
+  const saveApiKey = (key) => {
+    const trimmedKey = key.trim();
+    setApiKey(trimmedKey);
+    localStorage.setItem('userGeminiApiKey', trimmedKey);
+    setShowSettings(false);
+    setError('');
+  };
+
+  const clearApiKey = () => {
+    setApiKey('');
+    localStorage.removeItem('userGeminiApiKey');
+    setShowSettings(true);
   };
 
   const startCamera = async () => {
@@ -71,6 +86,12 @@ export default function ActivityMonitor({ isEmbedded = false }) {
       return;
     }
 
+    if (!apiKey) {
+      setError('Gemini API Key is missing. Please add it in settings.');
+      setShowSettings(true);
+      return;
+    }
+
     setIsAnalyzing(true);
     let currentTask = "Analyzing...";
 
@@ -78,16 +99,23 @@ export default function ActivityMonitor({ isEmbedded = false }) {
       const canvas = canvasRef.current;
       const video = videoRef.current;
       
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+      // Ensure video is ready
+      if (video.readyState < 2 || !video.videoWidth) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+
+      canvas.width = video.videoWidth || 640;
+      canvas.height = video.videoHeight || 480;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       
-      // Get base64 image data (remove the data:image/jpeg;base64, prefix)
+      // Get base64 image data
       const base64Image = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
       
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
       // Call Gemini Vision
-      const response = await fetch(GEMINI_API_URL, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -125,29 +153,32 @@ export default function ActivityMonitor({ isEmbedded = false }) {
 
       const data = await response.json();
       
-      if (data.error) throw new Error(data.error.message || 'API Error');
+      if (data.error) {
+        if (data.error.status === 'PERMISSION_DENIED') {
+          throw new Error('Invalid API Key or expired.');
+        }
+        throw new Error(data.error.message || 'API Error');
+      }
       
       currentTask = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "Unknown activity";
       
-      // Clean up response if it has periods or quotes
+      // Clean up response
       currentTask = currentTask.replace(/["']/g, '').replace(/\.$/, '');
       
       setLastDetected(currentTask);
       
-      // Log it if it's a real activity (not just "No person detected" repeatedly)
+      // Log it if it's a real activity
       if (currentTask && currentTask.toLowerCase() !== "no person detected") {
         saveLog(currentTask);
       }
 
     } catch (err) {
       console.error('Vision API Error Details:', err);
-      // Give more specific error message based on common issues
-      if (err.message.includes('API key')) {
-        setError('API Key is invalid or missing.');
-      } else {
-        setError(`Failed to analyze frame: ${err.message}`);
-      }
+      setError(`Failed to analyze frame: ${err.message}`);
       setLastDetected("Analysis failed");
+      if (err.message.toLowerCase().includes('key')) {
+        setShowSettings(true);
+      }
     } finally {
       setIsAnalyzing(false);
     }
@@ -212,11 +243,51 @@ export default function ActivityMonitor({ isEmbedded = false }) {
             <div className="am-icon">
               <Camera size={28} />
             </div>
-            <div>
+            <div style={{ flex: 1 }}>
               <h1>AI Activity Monitor</h1>
               <p>Uses Gemini Vision to detect daily tasks and log them automatically.</p>
             </div>
+            <button 
+              className={`am-btn ${showSettings ? 'btn-primary' : 'btn-outline'}`}
+              onClick={() => setShowSettings(!showSettings)}
+            >
+              <Settings size={18} />
+              {apiKey ? 'API Settings' : 'Setup API Key'}
+            </button>
           </header>
+        </ScrollReveal>
+      )}
+
+      {showSettings && (
+        <ScrollReveal direction="down">
+          <div className="am-settings-card animate-fade-in">
+            <div className="am-settings-content">
+              <h3><Settings size={18} /> Gemini Vision Configuration</h3>
+              <p>To use AI activity monitoring, you need a Gemini API Key. Your key is stored locally in this browser and never sent to our servers.</p>
+              
+              <div className="am-api-input-group">
+                <input 
+                  type="password" 
+                  placeholder="Enter your Gemini API Key..." 
+                  className="am-api-input"
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                />
+                <button className="am-btn btn-primary" onClick={() => saveApiKey(apiKey)}>
+                  <Save size={16} /> Save Key
+                </button>
+                {apiKey && (
+                  <button className="am-btn btn-danger" onClick={clearApiKey}>
+                    <Trash2 size={16} /> Delete
+                  </button>
+                )}
+              </div>
+              
+              <div className="am-settings-help">
+                <p>Don't have a key? <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer">Get one for free at Google AI Studio</a></p>
+              </div>
+            </div>
+          </div>
         </ScrollReveal>
       )}
 
