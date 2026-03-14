@@ -16,30 +16,6 @@ export default function FaceRecognitionPage() {
   const [loadingStatus, setLoadingStatus] = useState('Initializing AI...');
   const detectionRef = useRef(null);
 
-  // Load face-api.js models
-  useEffect(() => {
-    const loadModels = async () => {
-      try {
-        setLoadingStatus('Loading face detection models...');
-        const MODEL_URL = '/models';
-        await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-        await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
-        await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
-        setLoadingStatus('Loading reference faces...');
-        await loadFamilyDescriptors();
-        setModelsLoaded(true);
-        setLoadingStatus('');
-      } catch (err) {
-        console.error('Error loading models:', err);
-        setError('Could not load AI models. Please try again.');
-      }
-    };
-    loadModels();
-    return () => {
-      if (detectionRef.current) cancelAnimationFrame(detectionRef.current);
-    };
-  }, []);
-
   // Load descriptors from stored family member photos
   const loadFamilyDescriptors = async () => {
     const descriptors = [];
@@ -63,6 +39,30 @@ export default function FaceRecognitionPage() {
       setLabeledDescriptors(descriptors);
     }
   };
+
+  // Load face-api.js models
+  useEffect(() => {
+    const loadModels = async () => {
+      try {
+        setLoadingStatus('Loading face detection models...');
+        const MODEL_URL = '/models';
+        await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+        await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+        await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+        setLoadingStatus('Loading reference faces...');
+        await loadFamilyDescriptors();
+        setModelsLoaded(true);
+        setLoadingStatus('');
+      } catch (err) {
+        console.error('Error loading models:', err);
+        setError('Could not load AI models. Please try again.');
+      }
+    };
+    loadModels();
+    return () => {
+      if (detectionRef.current) cancelAnimationFrame(detectionRef.current);
+    };
+  }, []);
 
   // Start camera
   const startCamera = async () => {

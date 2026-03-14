@@ -52,8 +52,13 @@ export default function Navbar({ mode, onModeToggle, onExit }) {
     { to: '/music', icon: <Music size={20} />, label: 'Music Theme' },
     { to: '/games', icon: <Gamepad2 size={20} />, label: 'Games' },
   ];
+  
+  const preventiveLinks = [
+    { to: '/', icon: <Home size={20} />, label: 'Dashboard' },
+    { to: '/games', icon: <Gamepad2 size={20} />, label: 'Cognitive Gym' },
+  ];
 
-  const links = mode === 'patient' || mode === 'preventive' ? patientLinks : caregiverLinks;
+  const links = mode === 'preventive' ? preventiveLinks : mode === 'caregiver' ? caregiverLinks : patientLinks;
 
   return (
     <nav className="navbar">

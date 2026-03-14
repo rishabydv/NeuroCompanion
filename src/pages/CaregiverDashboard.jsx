@@ -8,6 +8,7 @@ import { patient } from '../data/patientData';
 import { usePatientData } from '../context/PatientDataContext';
 import CaregiverAnalytics from '../components/CaregiverAnalytics';
 import LocationTracker from '../components/LocationTracker';
+import { ErrorBoundary } from '../components/ErrorBoundary';
 import { useNavigate } from 'react-router-dom';
 import './CaregiverDashboard.css';
 
@@ -201,7 +202,9 @@ export default function CaregiverDashboard() {
 
       {/* Live GPS Geofencing */}
       <section className="cg-data-section animate-fade-in-up" style={{ animationDelay: '0.22s' }}>
-        <LocationTracker />
+        <ErrorBoundary>
+          <LocationTracker />
+        </ErrorBoundary>
       </section>
 
       {/* Analytics Section */}

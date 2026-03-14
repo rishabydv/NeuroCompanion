@@ -42,6 +42,19 @@ export default function MoodThemeProvider({ children }) {
   const [currentMood, setCurrentMood] = useState(null);
   const [themeLabel, setThemeLabel] = useState('');
 
+  const applyTheme = (moodId) => {
+    const theme = MOOD_THEMES[moodId];
+    if (!theme) return;
+
+    const root = document.documentElement;
+    Object.entries(theme).forEach(([key, value]) => {
+      if (key.startsWith('--')) {
+        root.style.setProperty(key, value);
+      }
+    });
+    setThemeLabel(theme.label);
+  };
+
   useEffect(() => {
     const checkMood = () => {
       const today = new Date().toDateString();
@@ -68,19 +81,6 @@ export default function MoodThemeProvider({ children }) {
       window.removeEventListener('moodUpdated', handleStorage);
     };
   }, [currentMood]);
-
-  const applyTheme = (moodId) => {
-    const theme = MOOD_THEMES[moodId];
-    if (!theme) return;
-
-    const root = document.documentElement;
-    Object.entries(theme).forEach(([key, value]) => {
-      if (key.startsWith('--')) {
-        root.style.setProperty(key, value);
-      }
-    });
-    setThemeLabel(theme.label);
-  };
 
   return (
     <>

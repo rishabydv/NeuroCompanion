@@ -94,23 +94,44 @@ export default function App() {
           <main className="main-content">
             <Suspense fallback={<PageLoader />}>
               <Routes>
+                {/* Home Dashboard */}
                 <Route path="/" element={
                   mode === 'preventive' ? <PreventiveDashboard /> :
                   mode === 'caregiver' ? <Navigate to="/caregiver" replace /> :
                   <PatientHome />
                 } />
+                <Route path="/caregiver" element={
+                  mode === 'caregiver' ? <CaregiverDashboard /> : <Navigate to="/" replace />
+                } />
+
+                {/* Shared Pages */}
                 <Route path="/family" element={<FamilyPage />} />
                 <Route path="/routine" element={<RoutinePage />} />
                 <Route path="/memories" element={<MemoryVault />} />
                 <Route path="/medication" element={<MedicationPage />} />
                 <Route path="/music" element={<MusicTherapyPage />} />
-                <Route path="/games" element={mode === 'preventive' ? <NeuroGymPage /> : <CognitiveGamesPage />} />
+                <Route path="/games" element={
+                  mode === 'preventive' ? <NeuroGymPage /> : <CognitiveGamesPage />
+                } />
                 <Route path="/timeline" element={<LifeTimelinePage />} />
-                <Route path="/face-recognition" element={<FaceRecognitionPage />} />
-                <Route path="/memory-map" element={<MemoryMapPage />} />
-                <Route path="/daily-log" element={<ConversationMemory />} />
-                <Route path="/caregiver" element={<CaregiverDashboard />} />
-                <Route path="/activity-monitor" element={<ActivityMonitor />} />
+
+                {/* Patient/Preventive Only Pages */}
+                <Route path="/face-recognition" element={
+                  mode !== 'caregiver' ? <FaceRecognitionPage /> : <Navigate to="/caregiver" replace />
+                } />
+                <Route path="/memory-map" element={
+                  mode !== 'caregiver' ? <MemoryMapPage /> : <Navigate to="/caregiver" replace />
+                } />
+                <Route path="/daily-log" element={
+                  mode !== 'caregiver' ? <ConversationMemory /> : <Navigate to="/caregiver" replace />
+                } />
+
+                {/* Caregiver Only Pages */}
+                <Route path="/activity-monitor" element={
+                  mode === 'caregiver' ? <ActivityMonitor /> : <Navigate to="/" replace />
+                } />
+
+                {/* Fallback routing */}
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Suspense>

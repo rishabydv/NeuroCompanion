@@ -17,6 +17,17 @@ const medicationData = [
   { name: 'Missed/Late', value: 15, color: '#f87171' },
 ];
 
+const CustomMoodTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip">
+        <p className="label">{payload[0].payload.day}: {payload[0].payload.label}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
 export default function CaregiverAnalytics() {
   const getMoodColor = (mood) => {
     switch(mood) {
@@ -27,17 +38,6 @@ export default function CaregiverAnalytics() {
       case 1: return '#f87171'; // Red - Agitated
       default: return '#94a3b8';
     }
-  };
-
-  const CustomMoodTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="custom-tooltip">
-          <p className="label">{payload[0].payload.day}: {payload[0].payload.label}</p>
-        </div>
-      );
-    }
-    return null;
   };
 
   return (

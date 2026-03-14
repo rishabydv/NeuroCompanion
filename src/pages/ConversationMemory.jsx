@@ -67,7 +67,7 @@ export default function ConversationMemory() {
   };
 
   // Gemini API setup
-  const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyAYm7RHvGJTdCtQxfpFkXzuSKITB61JHPA';
+  const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyB65jhmH9vo2OcmFLikzMbYn6PSvkfS86Q';
   const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
   const callGemini = async (query, eventsList) => {

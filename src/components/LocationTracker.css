@@ -133,10 +133,13 @@
   box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
-/* Patient Map Marker */
+/* Patient Map Marker (Leaflet specific overrides) */
+.custom-leaflet-icon {
+  background: transparent;
+  border: none;
+}
+
 .lt-patient-marker {
-  position: absolute;
-  transform: translate(-50%, -50%); /* Center over coordinate */
   width: 48px;
   height: 48px;
   border-radius: var(--radius-full);
@@ -145,6 +148,7 @@
   box-shadow: 0 4px 15px rgba(0,0,0,0.3);
   z-index: 2;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative; /* Leaflet icon wraps this */
 }
 
 .lt-patient-avatar {
@@ -174,10 +178,8 @@
 }
 
 .lt-home-marker {
-  position: absolute;
-  transform: translate(-50%, -100%);
+  position: relative;
   z-index: 1;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
 }
 
 .lt-footer {
