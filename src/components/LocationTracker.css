@@ -1,0 +1,215 @@
+.location-tracker-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-base);
+  margin-bottom: var(--space-xl);
+}
+
+.location-tracker-card.warning-state {
+  border-color: #e74c3c;
+  box-shadow: 0 0 20px rgba(231, 76, 60, 0.3);
+  animation: pulseWarning 2s infinite;
+}
+
+@keyframes pulseWarning {
+  0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(231, 76, 60, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+}
+
+.lt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border);
+}
+
+.lt-title-area {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.lt-title-area h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--text-lg);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.lt-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-safe {
+  background: rgba(46, 204, 113, 0.15);
+  color: #27ae60;
+}
+
+.status-danger {
+  background: rgba(231, 76, 60, 0.15);
+  color: #e74c3c;
+  animation: flash 1s infinite alternate;
+}
+
+.lt-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+@keyframes flash {
+  from { opacity: 0.8; }
+  to { opacity: 1; }
+}
+
+.lt-btn-simulate {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-fast);
+}
+
+.btn-danger {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+}
+
+.btn-danger:hover {
+  background: #e74c3c;
+  color: white;
+}
+
+.btn-safe {
+  background: rgba(46, 204, 113, 0.1);
+  color: #27ae60;
+}
+
+.btn-safe:hover {
+  background: #27ae60;
+  color: white;
+}
+
+.lt-map-container {
+  position: relative;
+  background: var(--surface-hover);
+  border-bottom: 1px solid var(--border);
+}
+
+.lt-api-warning {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  background: #f39c12;
+  color: white;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  z-index: 10;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* Patient Map Marker */
+.lt-patient-marker {
+  position: absolute;
+  transform: translate(-50%, -50%); /* Center over coordinate */
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-lavender);
+  padding: 3px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  z-index: 2;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lt-patient-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  background: white;
+  border: 2px solid white;
+}
+
+.marker-danger {
+  background: #e74c3c !important;
+}
+
+.pulse .lt-marker-ring {
+  position: absolute;
+  inset: -10px;
+  border: 3px solid #e74c3c;
+  border-radius: var(--radius-full);
+  animation: markerPulse 1.5s infinite;
+}
+
+@keyframes markerPulse {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+.lt-home-marker {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  z-index: 1;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+.lt-footer {
+  padding: var(--space-md) var(--space-lg);
+  background: var(--surface);
+}
+
+.lt-stats {
+  display: flex;
+  gap: var(--space-xl);
+}
+
+.lt-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--text-sm);
+}
+
+.lt-stat-label {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .lt-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+  
+  .lt-stats {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+}

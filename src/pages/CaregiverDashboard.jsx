@@ -7,6 +7,7 @@ import {
 import { patient } from '../data/patientData';
 import { usePatientData } from '../context/PatientDataContext';
 import CaregiverAnalytics from '../components/CaregiverAnalytics';
+import LocationTracker from '../components/LocationTracker';
 import { useNavigate } from 'react-router-dom';
 import './CaregiverDashboard.css';
 
@@ -196,6 +197,11 @@ export default function CaregiverDashboard() {
             Wandering Alert
           </button>
         </div>
+      </section>
+
+      {/* Live GPS Geofencing */}
+      <section className="cg-data-section animate-fade-in-up" style={{ animationDelay: '0.22s' }}>
+        <LocationTracker />
       </section>
 
       {/* Analytics Section */}
