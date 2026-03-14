@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Music, Play, Pause, Volume2, Headphones, Wind } from 'lucide-react';
 import { musicPlaylist, ambientSounds, patient } from '../data/patientData';
 import ScrollReveal from '../components/ScrollReveal';
@@ -55,20 +55,30 @@ export default function MusicTherapyPage() {
     setActiveUrl(null);
   };
 
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    if (activeUrl && audioRef.current) {
+      audioRef.current.play().catch(e => console.error("Play failed:", e));
+    } else if (!activeUrl && audioRef.current) {
+      audioRef.current.pause();
+    }
+  }, [activeUrl]);
+
   return (
     <div className="music-therapy">
-      {/* Hidden Audio Player - Native HTML5 audio is allowed to autoplay on click */}
-      {activeUrl && (
-        <audio 
-          autoPlay
-          src={activeUrl}
-          onEnded={handleAudioEnded}
-          onError={(e) => {
-            console.error("Audio file not found. Ensure you have placed the mp3 in the public/music folder.", e);
+      {/* Hidden Audio Player - Controlled via ref to bypass browser autoplay blocks */}
+      <audio 
+        ref={audioRef}
+        src={activeUrl || undefined}
+        onEnded={handleAudioEnded}
+        onError={(e) => {
+          if (activeUrl) {
+            console.error("Audio file not found.", e);
             handleAudioEnded();
-          }}
-        />
-      )}
+          }
+        }}
+      />
 
       <ScrollReveal direction="up" duration={0.7}>
         <header className="page-header">
