@@ -80,7 +80,7 @@ export default function App() {
 
   return (
     <PatientDataProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/NeuroCompanion">
         <div className={`app app-${mode}`}>
           <MoodThemeProvider>
           {/* Lightweight CSS animated background */}
