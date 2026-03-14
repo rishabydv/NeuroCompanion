@@ -70,7 +70,6 @@ export default function MemoryVault() {
                 gap: '8px',
                 padding: '12px 24px',
                 borderRadius: '50px',
-                border: 'none',
                 background: isPlaying ? 'rgba(239, 68, 68, 0.2)' : 'rgba(168, 230, 207, 0.2)',
                 color: isPlaying ? '#ef4444' : '#a8e6cf',
                 fontSize: '1.1rem',
